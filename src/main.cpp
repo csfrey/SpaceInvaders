@@ -1,21 +1,37 @@
 #include "raylib.h"
+#include "GameState.h"
+#include "Menu.h"
 
 int main()
 {
+    GameState gameState = MENU;
+    Difficulty difficulty = EASY;
+    Menu menu;
+
     InitWindow(800, 600, "Space Invaders - Raylib");
     SetTargetFPS(60);
 
     while (!WindowShouldClose())
     {
-        if (IsKeyPressed(KEY_ESCAPE))
+        switch (gameState)
         {
-            CloseWindow();
+        case MENU:
+        {
+            // do menu stuff
+            menu.Update(gameState, difficulty);
+            menu.Draw(difficulty);
         }
 
-        BeginDrawing();
-        ClearBackground(BLACK);
-        DrawText("Hello, Space Invaders!", 250, 300, 20, WHITE);
-        EndDrawing();
+        case GAME:
+        {
+            // run the game
+        }
+
+        default:
+        {
+            // handle errors
+        }
+        }
     }
 
     CloseWindow();
