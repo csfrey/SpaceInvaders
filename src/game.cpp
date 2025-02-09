@@ -3,10 +3,36 @@
 #include <vector>
 #include <iostream>
 
-// Entity::~Entity() {}
+Entity::~Entity() {}
+
+Player::Player()
+{
+  posX = GetScreenWidth() / 2;
+  posY = 500;
+  speed = 8;
+  lifecycle = ALIVE;
+}
+
+void Player::Update(GameState &gameState)
+{
+  if (IsKeyDown(KEY_RIGHT) && posX < GetScreenWidth() - 20)
+  {
+    posX += speed;
+  }
+  else if (IsKeyDown(KEY_LEFT) && posX > 0)
+  {
+    posX -= speed;
+  }
+}
+
+void Player::Draw(GameState &gameState)
+{
+  DrawRectangle(posX, posY, 20, 20, RED);
+}
 
 Game::Game(GameState &gameState)
 {
+  Player player;
   isBlinkIncreasing = true;
   blinkerAlpha = 0.5f;
 }
@@ -39,6 +65,11 @@ void Game::Update(GameState &gameState)
       blinkerAlpha = 0.1f;
       isBlinkIncreasing = true;
     }
+  }
+
+  if (gameState.gameSceneState == RUN)
+  {
+    player.Update(gameState);
   }
 }
 
@@ -79,6 +110,8 @@ void Game::Draw(GameState &gameState)
     char *title = "GAME RUNNING";
     int titleWidth = MeasureText(title, titleSize);
     DrawText(title, (GetScreenWidth() - titleWidth) / 2, 100, titleSize, WHITE);
+
+    player.Draw(gameState);
     break;
   }
 
@@ -89,7 +122,7 @@ void Game::Draw(GameState &gameState)
     int titleWidth = MeasureText(title, titleSize);
     DrawText(title, (GetScreenWidth() - titleWidth) / 2, 100, titleSize, WHITE);
 
-        int textSize = 30;
+    int textSize = 30;
     char *startMessage = "press P to resume";
     int startMessageWidth = MeasureText(startMessage, textSize);
     DrawText(startMessage, (GetScreenWidth() - startMessageWidth) / 2, 500, textSize, Fade(WHITE, blinkerAlpha));
