@@ -48,9 +48,11 @@ public:
   void Update(GameState &gameState);
   void Draw(GameState &gameState);
 
-  // private:
+private:
   //   Player player;
   //   std::vector<Bullet> bullets;
+  float blinkerAlpha;
+  bool isBlinkIncreasing;
 };
 
 #endif

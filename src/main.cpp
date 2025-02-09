@@ -9,6 +9,7 @@ int main()
 {
     InitWindow(800, 600, "Space Invaders - Raylib");
     SetTargetFPS(60);
+    SetExitKey(KEY_NULL);
 
     Starfield starfield;
     GameState gameState;
