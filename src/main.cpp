@@ -2,6 +2,7 @@
 #include "gamestate.h"
 #include "screen.h"
 #include "menu.h"
+#include "game.h"
 #include "starfield.h"
 
 int main()
@@ -12,15 +13,19 @@ int main()
     Starfield starfield;
     GameState gameState;
     Menu menu;
-    Screen *screen = &menu;
+    Game game(gameState);
+    Screen *screen = &menu; // Screen <- Menu
 
     while (!WindowShouldClose())
     {
-        // do updates
         switch (gameState.sceneState)
         {
         case MENU:
             screen = &menu;
+            break;
+
+        case GAME:
+            screen = &game;
             break;
 
         case EXIT:
@@ -32,9 +37,11 @@ int main()
             break;
         }
 
+        // update section
         starfield.Update();
         screen->Update(gameState);
 
+        // draw section
         BeginDrawing();
         ClearBackground(BLACK);
         starfield.Draw();
