@@ -4,7 +4,9 @@
             "name": "Mac",
             "includePath": [
                 "/opt/homebrew/include",
-                "${workspaceFolder}/src"
+                "${workspaceFolder}/src",
+                "${workspaceFolder}/src/screens",
+                "${workspaceFolder}/src/starfield"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang++",

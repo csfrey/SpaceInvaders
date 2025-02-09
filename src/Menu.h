@@ -1,18 +1,17 @@
 #ifndef MENU_H
 #define MENU_H
 
-#include "raylib.h"
-#include "GameState.h"
+#include "screen.h"
 
-class Menu
+class Menu : public Screen
 {
 public:
   Menu();
-  void Update(GameState &gameState, Difficulty &difficulty);
-  void Draw(Difficulty &difficulty);
+  void Update(GameState &gameState) override;
+  void Draw(GameState &gameState) override;
 
 private:
-  int selectedOption;
+  int currentOption;
 };
 
 #endif

@@ -1,37 +1,45 @@
 #include "raylib.h"
-#include "GameState.h"
-#include "Menu.h"
+#include "gamestate.h"
+#include "screen.h"
+#include "menu.h"
+#include "starfield.h"
 
 int main()
 {
-    GameState gameState = MENU;
-    Difficulty difficulty = EASY;
-    Menu menu;
-
     InitWindow(800, 600, "Space Invaders - Raylib");
     SetTargetFPS(60);
 
+    Starfield starfield;
+    GameState gameState;
+    Menu menu;
+    Screen *screen = &menu;
+
     while (!WindowShouldClose())
     {
-        switch (gameState)
+        // do updates
+        switch (gameState.sceneState)
         {
         case MENU:
-        {
-            // do menu stuff
-            menu.Update(gameState, difficulty);
-            menu.Draw(difficulty);
-        }
+            screen = &menu;
+            break;
 
-        case GAME:
-        {
-            // run the game
-        }
+        case EXIT:
+            CloseWindow();
+            break;
 
         default:
-        {
-            // handle errors
+            // handle error
+            break;
         }
-        }
+
+        starfield.Update();
+        screen->Update(gameState);
+
+        BeginDrawing();
+        ClearBackground(BLACK);
+        starfield.Draw();
+        screen->Draw(gameState);
+        EndDrawing();
     }
 
     CloseWindow();
