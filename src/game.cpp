@@ -5,6 +5,23 @@
 
 Entity::~Entity() {}
 
+Bullet::Bullet(int x, int y, int s)
+{
+  posX = x;
+  posY = y;
+  speed = s;
+}
+
+void Bullet::Update(GameState &gameState)
+{
+  posY += speed;
+}
+
+void Bullet::Draw(GameState &gameState)
+{
+  DrawRectangle(posX - 1, posY, 2, 5, BLUE);
+}
+
 Player::Player()
 {
   posX = GetScreenWidth() / 2;
@@ -15,11 +32,11 @@ Player::Player()
 
 void Player::Update(GameState &gameState)
 {
-  if (IsKeyDown(KEY_RIGHT) && posX < GetScreenWidth() - 20)
+  if ((IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D)) && posX < GetScreenWidth() - 20)
   {
     posX += speed;
   }
-  else if (IsKeyDown(KEY_LEFT) && posX > 0)
+  else if ((IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A)) && posX > 0)
   {
     posX -= speed;
   }
@@ -67,9 +84,17 @@ void Game::Update(GameState &gameState)
     }
   }
 
+  if (IsKeyPressed(KEY_SPACE))
+  {
+    Bullet bullet(player.posX + 10, player.posY, -15);
+    bullets.push_back(bullet);
+  }
+
   if (gameState.gameSceneState == RUN)
   {
     player.Update(gameState);
+    for (auto &bullet : bullets)
+      bullet.Update(gameState);
   }
 }
 
@@ -112,6 +137,13 @@ void Game::Draw(GameState &gameState)
     DrawText(title, (GetScreenWidth() - titleWidth) / 2, 100, titleSize, WHITE);
 
     player.Draw(gameState);
+    for (auto &bullet : bullets)
+      bullet.Draw(gameState);
+
+    bullets.erase(std::remove_if(bullets.begin(), bullets.end(),
+                                 [](Bullet &b)
+                                 { return b.posY < 0; }),
+                  bullets.end());
     break;
   }
 

@@ -36,9 +36,9 @@ public:
 class Bullet : public Entity
 {
 public:
-  Bullet(GameState &gameState);
-  void Update(GameState &gameState);
-  void Draw(GameState &gameState);
+  Bullet(int x, int y, int s);
+  void Update(GameState &gameState) override;
+  void Draw(GameState &gameState) override;
 };
 
 class Game : public Screen
